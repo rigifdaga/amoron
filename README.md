@@ -75,7 +75,7 @@ Berikut adalah bagan yang berisi request client ke web web aplikasi berbasis Dja
 
 <h2>Bagan</h2>
 
-[![http-request-1.png](https://i.postimg.cc/gkPXsNL8/http-request-1.png)](https://postimg.cc/c6XL47mL)
+[![http-request-2.png](https://i.postimg.cc/q7dqkM7b/http-request-2.png)](https://postimg.cc/dh4w6Frr)
 
 <h2>Kaitan</h2>
 
