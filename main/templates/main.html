@@ -1,24 +1,57 @@
-<html>
-<head>
-    <style>
-        body {
-            background-color: lightyellow;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            color: firebrick;
-            text-align: center;
-        }
-        p {
-            color: black;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <h1>{{ app }}</h1>
-    <p>**NEW!** Amoron Rental is now open for renting electronics. You can choose from a variety of electronics, such as LED Projector, TV, Fridge, and more. Whether you need them for study or entertainment, Amoron Rental has you covered. Try it today!</p>
-    <p>Created by: {{ nama }}</p>
-    <p>Class: {{ kelas }}</p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <html>
+    <head>
+        <style>
+            body {
+                background-color: lightyellow;
+                font-family: Arial, sans-serif;
+            }
+            h1 {
+                color: firebrick;
+                text-align: center;
+            }
+            p {
+                color: black;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>{{ app }}</h1>
+        <p>**NEW!** Amoron Rental is now open for renting electronics. You can choose from a variety of electronics, such as LED Projector, TV, Fridge, and more. Whether you need them for study or entertainment, Amoron Rental has you covered. Try it today!</p>
+        <p>Created by: {{ nama }}</p>
+        <p>Class: {{ kelas }}</p>
+    </body>
+    </html>
+
+<table style="border: 1px solid black; border-collapse: collapse;">
+    <tr>
+        <th style="border: 1px solid black; padding: 10px;">Name</th>
+        <th style="border: 1px solid black; padding: 10px;">Description</th>
+        <th style="border: 1px solid black; padding: 10px;">Status</th>
+        <th style="border: 1px solid black; padding: 10px;">Amount</th>
+        <th style="border: 1px solid black; padding: 10px;">Price</th>
+    </tr>
+
+    {% for product in products %}
+        <tr>
+            <td style="border: 1px solid black; padding: 10px;">{{product.name}}</td>
+            <td style="border: 1px solid black; padding: 10px;">{{product.description}}</td>
+            <td style="border: 1px solid black; padding: 10px;">{{product.status}}</td>
+            <td style="border: 1px solid black; padding: 10px;">{{product.amount}}</td>
+            <td style="border: 1px solid black; padding: 10px;">{{product.price}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br />
+
+<a href="{% url 'main:create_product' %}">
+    <button>
+        Add New Product
+    </button>
+</a>
+
+{% endblock content %}
