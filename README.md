@@ -230,7 +230,7 @@ Kemudian url selanjutnya adalah http://localhost:8000/xml dan http://localhost:8
 
 [![message-Image-1694872723766.jpg](https://i.postimg.cc/gkYMPdVn/message-Image-1694872723766.jpg)](https://postimg.cc/9znPG6Nh)
 
-Terakhir, saya membuat request dengan method `GET` dengan url http://localhost:8000/json dan http://localhost:8000/json
+Terakhir, saya membuat request dengan method `GET` dengan url http://localhost:8000/json dan http://localhost:8000/json/1
 
 [![message-Image-1694872751331.jpg](https://i.postimg.cc/L6n1PbRx/message-Image-1694872751331.jpg)](https://postimg.cc/WhczLSdZ)
 
