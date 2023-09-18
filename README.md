@@ -65,6 +65,66 @@ class ProductForm(ModelForm):
 
 Pada `fields` terdapat `name`, `description`, `status`, `amount`, dan `price` yang sesuai dengan variable yang ada pada `models.py` milik saya
 
+Kemudian saya memodifikasi file `views.py`. Saya mengimport modul dan membuat fungsi baru bernama `create_product`
+
+```python
+def create_product(request):
+    form = ProductForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "create_product.html", context)
+```
+
+Saya juga mengubah fungsi `show_main` yang sudah ada pada berkas `views.py` menjadi seperti berikut 
+
+```python
+def show_main(request):
+    products = Product.objects.all()
+    
+    context = {
+        'app': 'Amoron Rental',
+        'nama': 'Rifda Aulia Nurbahri',
+        'kelas' : 'PBP D',
+        'products' : products
+    }
+
+    return render(request, "main.html", context)
+```
+
+Pada `urls.py` di `main` saya menambahkan path url ke dalam `urlpattern`
+
+```python
+path('create-product', create_product, name='create_product'),
+```
+
+Kemudian saya membuat berkas baru HTML dengan nama `create_product.html` pada direktori `main/templates`
+
+```html
+{% extends 'base.html' %} 
+
+{% block content %}
+<h1 style="color:firebrick;">Add Rentable Appliances</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <table style="background-color:lightgrey;">
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Add Product" style="background-color:green; color:white;"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}
+```
+
 <h2>Menambahkan 5 Fungsi Views untuk Melihat Objek yang Sudah Ditambahkan dalam Format HTML, XML, JSON, XML by ID, dan JSON by ID</h2>
 
 Pertama-tama saya membuka `views.py` pada direktori `main` dan melakukan import modul
