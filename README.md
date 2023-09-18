@@ -178,6 +178,14 @@ Terakhir, saya membuat request dengan method `GET` dengan url http://localhost:8
 
 <h1>BONUS</h1>
 
+Untuk mengimplementasi bonus ini, saya menambahkan kode berikut pada file `main.html`
+
+```html
+<h2>You saved {{ products.count }} item(s) in this app</h2>
+```
+
+[![message-Image-1695026243103.jpg](https://i.postimg.cc/PqSymt06/message-Image-1695026243103.jpg)](https://postimg.cc/WDJ0VPNr)
+
 </details>
 
 <details>
