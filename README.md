@@ -220,9 +220,17 @@ urlpatterns = [
 <h2>Mengakses URL Menggunakan Postman</h2>
 
 Pertama-tama saya membuka Postman dan melakukan `Send` request baru dengan method `GET` dan url
-http://localhost:8000 
+http://localhost:8000 untuk get html
 
 [![message-Image-1694872656652.jpg](https://i.postimg.cc/bJwXJbb2/message-Image-1694872656652.jpg)](https://postimg.cc/Y4ZDDvdp)
+
+[![message-Image-1695176106233.jpg](https://i.postimg.cc/3rcy4GVV/message-Image-1695176106233.jpg)](https://postimg.cc/G9v364cx)
+
+[![message-Image-1695176353307.jpg](https://i.postimg.cc/pVhjBkfR/message-Image-1695176353307.jpg)](https://postimg.cc/6TKTWrbm)
+
+[![message-Image-1695176353307.jpg](https://i.postimg.cc/pVhjBkfR/message-Image-1695176353307.jpg)](https://postimg.cc/6TKTWrbm)
+
+`notes : screenshot get html diambil ketika saya menambahkan data baru jadi untuk get xml dan json isinya cuman ada dua product`
 
 Kemudian url selanjutnya adalah http://localhost:8000/xml dan http://localhost:8000/xml/1
 
