@@ -7,6 +7,77 @@ Kelas   : PBP D
 https://amoron.adaptable.app/
 
 <details>
+
+<summary> Tugas 4 </summary>
+
+<h1> Django UserCreationForm </h1>
+
+Django UserCreationForm adalah formulir yang digunakan untuk membuat pengguna baru yang dapat menggunakan aplikasi web kita. Formulir ini memiliki tiga bidang: username, password1, dan password2 (yang pada dasarnya digunakan untuk konfirmasi password).
+
+Berikut adalah beberapa kelebihan dan kekurangan dari Django UserCreationForm:
+
+Kelebihan:
+
+1. Django UserCreationForm merupakan bagian dari sistem otentikasi pengguna bawaan Django.
+
+2. Formulir ini memiliki fungsi save() yang memungkinkan kita untuk menyimpan instance Pengguna ke dalam basis data.
+
+3. Django UserCreationForm memiliki fitur keamanan bawaan yang cukup kuat untuk melindungi aplikasi web dari ancaman seperti SQL injection, Cross-site scripting, Clickjacking dan berbagai bentuk serangan lainnya.
+
+Kekurangan:
+
+1. Django secara umum dianggap sebagai perangkat lunak monolitik yang besar. Hal ini memungkinkan komunitas untuk mengembangkan ratusan modul dan aplikasi yang dapat digunakan kembali, tetapi juga membatasi kecepatan pengembangan Django.
+
+2. Django perlu mempertahankan kompatibilitas mundur, sehingga perkembangannya berlangsung lambat.
+
+3. Kerangka kerja ini mendorong kita ke dalam pola tertentu, tetapi lebih menyenangkan ketika kita dapat memprogram sendiri memilih arsitektur, struktur, dan pola desain.
+
+<h1> Perbedaan Antara Autentikasi dan Otorisasi dalam Konteks Django </h1>
+
+Dalam konteks Django, autentikasi dan otorisasi memiliki peran yang sangat penting dan berbeda:
+
+Autentikasi adalah proses verifikasi identitas pengguna. Dengan kata lain, sistem memastikan bahwa pengguna adalah siapa yang mereka klaim. Misalnya, ketika pengguna mencoba masuk, sistem akan memeriksa apakah kombinasi nama pengguna dan kata sandi yang diberikan cocok dengan apa yang ada di basis data.
+
+Otorisasi, di sisi lain, menentukan apa yang dapat dilakukan pengguna yang telah terautentikasi. Ini berarti sistem memeriksa hak akses pengguna dan memutuskan apakah mereka diizinkan untuk melakukan tindakan tertentu (misalnya, mengedit atau menghapus suatu pos).
+
+Kedua konsep ini penting karena mereka membantu menjaga keamanan aplikasi web Django. Autentikasi membantu mencegah akses yang tidak sah dengan memastikan hanya pengguna yang sah yang dapat masuk. Sementara itu, otorisasi membantu mencegah penyalahgunaan aplikasi dengan membatasi apa yang dapat dilakukan pengguna setelah mereka masuk.
+
+<h1>Cookies dalam Konteks Aplikasi Web</h1>
+
+Cookies dalam konteks aplikasi web adalah file teks kecil yang berisi potongan data — seperti nama pengguna dan kata sandi — yang digunakan untuk mengidentifikasi komputer kita saat kita menggunakan jaringan. Cookies spesifik digunakan untuk mengidentifikasi pengguna spesifik dan meningkatkan pengalaman browsing web mereka.
+
+Django menggunakan cookies dalam manajemen sesi pengguna. Django menyediakan kerangka kerja sesi yang memungkinkan kita menyimpan dan mengambil data secara acak berdasarkan setiap pengunjung situs. Django mengabstraksi proses pengiriman dan penerimaan cookies, dengan menempatkan cookie ID sesi di sisi klien, dan menyimpan semua data terkait di sisi server. Dengan cara ini, hanya ID sesi yang terlihat oleh pengguna, sementara data sesi tetap tersembunyi di server.
+
+Untuk menggunakan sesi berbasis cookies, kita dapat mengatur pengaturan SESSION_ENGINE menjadi “django.contrib.sessions.backends.signed_cookies”. Data sesi akan disimpan menggunakan alat Django untuk penandatanganan kriptografis dan pengaturan SECRET_KEY.
+
+Penting untuk dicatat bahwa meskipun cookies sangat berguna untuk mempertahankan status aplikasi dan memberikan pengalaman yang dipersonalisasi kepada pengguna, mereka juga dapat menimbulkan masalah privasi jika tidak ditangani dengan benar. Oleh karena itu, penting untuk selalu menggunakan praktek terbaik keamanan saat bekerja dengan cookies.
+
+<h1>Keamanan Penggunaan Cookies</h1>
+
+Penggunaan cookies dalam pengembangan web umumnya dianggap aman. Cookies sendiri cukup tidak berbahaya; mereka diproses dan disimpan oleh browser web kita dan sangat penting untuk beberapa fungsi di situs web. Mereka tidak menyebar virus atau malware. Mereka tidak dapat membaca dokumen atau informasi lain dari hard drive kita. Mereka tidak mengetahui dan tidak mengandung kata sandi kita, alamat email kita, atau informasi pribadi lainnya.
+
+Namun, meskipun cookies secara umum aman, ada beberapa risiko keamanan dan privasi yang perlu diwaspadai:
+
+1. Pelacakan Pengguna: Cookies dapat digunakan oleh situs web untuk melacak perilaku pengguna, yang dapat menimbulkan masalah privasi.
+
+2. Serangan Pencurian Cookie (Cookie Theft): Jika seorang penyerang dapat mencuri cookie dari pengguna, mereka mungkin dapat menyamar sebagai pengguna tersebut.
+
+3. Serangan Pemalsuan Permintaan Situs Lintas (Cross-Site Request Forgery): Seorang penyerang dapat memanfaatkan fakta bahwa cookies disertakan dalam setiap permintaan ke situs web untuk memaksa pengguna melakukan tindakan yang tidak mereka inginkan.
+
+<h1>Implementasi Checklist</h1>
+
+<h2>Mengimplementasi Fungsi Registrasi, Login, dan Logout</h2>
+
+<h2>Membuat Akun Pengguna dan 3 Dummy Data</h2>
+
+<h2>Menghubungkan Model Item dengan User</h2>
+
+<h2>Menampilkan detail informasi pengguna yang sedang logged in</h2>
+
+
+</details>
+
+<details>
     
 <summary> Tugas 3 </summary>
 
@@ -353,7 +424,7 @@ Dengan cara ini, alur kerja dasar dalam pengembangan aplikasi Django adalah seba
 
 Virtual environment (venv) adalah alat yang sangat berguna dalam dalam pengembangan aplikasi web berbasis Django. Berikut adalah beberapa alasan mengapa kita menggunakan virtual environment:
 1. Isolasi Proyek : Virtual environment memungkinkan kita untuk membuat lingkungan kerja yang terisolasi untuk setiap proyek Python. Ini berarti bahwa setiap proyek memiliki salinan independen dari library Python yang diperlukan, dan tidak akan bersinggungan dengan library dari proyek lain. Hal ini membantu menghindari konflik dan masalah kompatibilitas antara proyek-proyek yang berbeda.
-2. Manajemen Dependensi : Virtual environment memungkinkan Anda untuk menginstal dan mengelola dependensi proyek secara terisolasi. Kita dapat membuat daftar dependensi proyek Anda dalam berkas seperti requirements.txt.
+2. Manajemen Dependensi : Virtual environment memungkinkan kita untuk menginstal dan mengelola dependensi proyek secara terisolasi. Kita dapat membuat daftar dependensi proyek kita dalam berkas seperti requirements.txt.
 3. Keamanan : Dengan menggunakan virtual environment, kita dapat menghindari pengubahan tidak sengaja atau penyusupan oleh berkas atau library di luar kendali proyek kita.
 
 Secara teknis kita masih dapat membuat aplikasi web berbasis Django tanpa menggunakan virtual environment. Namun, hal ini tidak dianjurkan karena akan menyulitkan manajemen dependensi, meningkatkan risiko konflik antara proyek, dan dapat membuat instalasi dan pengelolaan proyek lebih rumit. Dengan virtual environment, kita dapat memaksimalkan isolasi, manajemen dependensi, dan kemudahan pengembangan aplikasi Django kita. Oleh karena itu, sangat disarankan untuk menggunakan virtual environment dalam pengembangan proyek Django.
