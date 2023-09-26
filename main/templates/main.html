@@ -21,10 +21,12 @@
     <body>
         <h1>{{ app }}</h1>
         <p>**NEW!** Amoron Rental is now open for renting electronics. You can choose from a variety of electronics, such as LED Projector, TV, Fridge, and more. Whether you need them for study or entertainment, Amoron Rental has you covered. Try it today!</p>
-        <p>Created by: {{ nama }}</p>
-        <p>Class: {{ kelas }}</p>
+        <p>Created by: Rifda Aulia Nurbahri</p>
+        <p>Class: PBP D</p>
     </body>
     </html>
+
+<h2>Welcome {{ name }}!</h2>
 
 <h2>You saved {{ products.count }} item(s) in this app</h2>
 
@@ -39,13 +41,27 @@
 
     {% for product in products %}
         <tr>
-            <td style="border: 1px solid black; padding: 10px;">{{product.name}}</td>
-            <td style="border: 1px solid black; padding: 10px;">{{product.description}}</td>
-            <td style="border: 1px solid black; padding: 10px;">{{product.status}}</td>
-            <td style="border: 1px solid black; padding: 10px;">{{product.amount}}</td>
-            <td style="border: 1px solid black; padding: 10px;">{{product.price}}</td>
+            <td style="border: 1px solid black; padding: 10px;">{{ product.name }}</td>
+            <td style="border: 1px solid black; padding: 10px;">{{ product.description }}</td>
+            <td style="border: 1px solid black; padding: 10px;">{{ product.status }}</td>
+            <td style="border: 1px solid black; padding: 10px;">
+                {{ product.amount }}
+                <a href="{% url 'main:increment_amount' product.id %}">
+                    <button>+</button>
+                </a>
+                <a href="{% url 'main:decrement_amount' product.id %}">
+                    <button>-</button>
+                </a>
+            </td>
+            <td style="border: 1px solid black; padding: 10px;">{{ product.price }}</td>
+            <td style="border: 1px solid black; padding: 10px;">
+                <a href="{% url 'main:delete_product' product.id %}">
+                    <button>Delete</button>
+                </a>
+            </td>
         </tr>
     {% endfor %}
+
 </table>
 
 <br />

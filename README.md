@@ -68,12 +68,324 @@ Namun, meskipun cookies secara umum aman, ada beberapa risiko keamanan dan priva
 
 <h2>Mengimplementasi Fungsi Registrasi, Login, dan Logout</h2>
 
-<h2>Membuat Akun Pengguna dan 3 Dummy Data</h2>
+1. Mengimplementasi Fungsi Registrasi
+Pertama-tama saya membuka `views.py` yang ada pada subdirektori `main` dan membuat fungsi dengan nama `register` yang menerima parameter `request`. Saya mengimpor `redirect`, `UserCreationForm`, dan `messages` untuk keperluan fungsi ini. 
+
+```python
+from django.shortcuts import redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages  
+```
+
+Berikut adalah fungsi `register` yang dibuat
+
+```python
+def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
+    context = {'form':form}
+    return render(request, 'register.html', context)
+```
+
+Setelah itu saya membuat laman `register.html` pada `main/templates`
+
+```html
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Register</title>
+{% endblock meta %}
+
+{% block content %}  
+
+<div class = "login">
+    
+    <h1>Register</h1>  
+
+        <form method="POST" >  
+            {% csrf_token %}  
+            <table>  
+                {{ form.as_table }}  
+                <tr>  
+                    <td></td>
+                    <td><input type="submit" name="submit" value="Daftar"/></td>  
+                </tr>  
+            </table>  
+        </form>
+
+    {% if messages %}  
+        <ul>   
+            {% for message in messages %}  
+                <li>{{ message }}</li>  
+                {% endfor %}  
+        </ul>   
+    {% endif %}
+
+</div>  
+
+{% endblock content %}
+```
+
+Saya juga mengimpor fungsi `register` ke `urls.py` dan menambahkan path url ke dalam `urlpatterns`
+
+```python
+from main.views import register
+```
+
+```python
+path('register/', register, name='register'),
+```
+
+2. Mengimplementasi Fungsi Login
+Pada `views.py` saya menambahkan import `authenticate` dan `login`
+
+```python
+from django.contrib.auth import authenticate, login
+```
+
+Selanjutnya saya membuat fungsi `login`
+
+```python
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('main:show_main')
+        else:
+            messages.info(request, 'Sorry, incorrect username or password. Please try again.')
+    context = {}
+    return render(request, 'login.html', context)
+```
+
+Saya juga membuat laman `login.html` baru pada `main/templates`
+
+```html
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Login</title>
+{% endblock meta %}
+
+{% block content %}
+
+<div class = "login">
+
+    <h1>Login</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Username: </td>
+                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+            </tr>
+                    
+            <tr>
+                <td>Password: </td>
+                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input class="btn login_btn" type="submit" value="Login"></td>
+            </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}     
+        
+    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+
+</div>
+
+{% endblock content %}
+```
+
+Pada `urls.py` saya mengimport fungsi `login_user` dan menambahkan path url ke dalam `urlpatterns`
+
+```python
+from main.views import login_user
+```
+
+```python
+...
+path('login/', login_user, name='login'),
+...
+```
+
+3. Mengimplementasikan Fungsi Logout
+Pada `views.py` saya menambahkan import `logout`
+
+```python
+from django.contrib.auth import logout
+```
+
+Kemudian saya membuat fungsi `logout` dengan parameter `request`
+
+```python
+def logout_user(request):
+    logout(request)
+    return redirect('main:login')
+```
+
+Saya juga menambahkan button logout pada `main.html` yang ada pada `main/templates`
+
+```html
+...
+<a href="{% url 'main:logout' %}">
+    <button>
+        Logout
+    </button>
+</a>
+...
+```
+
+Terakhir saya membuka `urls.py` kembali yanga da pada folder `main` untuk mengimport fungsi `logout_user` yang telah dibuat dan menambahkan path url ke dalam `urlpatterns`
+
+```python
+from main.views import logout_user
+```
+
+```python
+...
+path('logout/', logout_user, name='logout'),
+...
+```
+
+<h2>Membuat 2 Akun Pengguna dengan 3 Dummy Data</h2>
+
+Pertama-tama saya menjalankan `python manage.py runserver` pada direktori lokal `amoron`. Setelah server berhasil dijalankan saya membuka `http://localhost:8000/`. Pada laman tersebut saya melakukan `register`. Register ini dilakukan pada `register.html` yang telah saya buat. Saya membuat dua akun dengan username `rifda` dan `hantu`. Setelah akun berhasil dibuat, saya melakukan login pada masing-masing akun, tampilan login ini sesuai dengan `login.html` yang telah saya buat. Terakhir saya menambahkan tiga dummy data dengan klik tombol `Add New Product`
+
 
 <h2>Menghubungkan Model Item dengan User</h2>
 
-<h2>Menampilkan detail informasi pengguna yang sedang logged in</h2>
+Hal yang pertama saya lakukan adalah membuka `models.py` yang ada pada subdirektori `main` dan melakukan import
 
+```python
+from django.contrib.auth.models import User
+```
+
+Pada model `Product` yang telah dibuat saya menambahkan kode berikut
+
+```python
+class Product(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ...
+```
+
+Setelah itu, pada `views.py` saya mengubah bagian conditional if pada kode fungsi `create_product`menjadi sebagai berikut
+
+```python
+def create_product(request):
+ form = ProductForm(request.POST or None)
+
+ if form.is_valid() and request.method == "POST":
+     product = form.save(commit=False)
+     product.user = request.user
+     product.save()
+     return HttpResponseRedirect(reverse('main:show_main'))
+ ...
+```
+
+Pada fungsi `show_main` saya juga mengubah variable `products` menjadi sebagauiberikut agar `Product` yang ditampilkan adalah `Product` yang terasosiasikan dengan pengguna yang sedang login
+
+```python
+def show_main(request):
+    products = Product.objects.filter(user=request.user)
+...
+```
+
+Karena melakukan modifikasi pada model maka saya melakukan migrasi model dengan menjalankan `python manage.py makemigration` serta `python manage.py migrate`.
+
+<h2>Menampilkan detail informasi pengguna yang sedang Logged in</h2>
+
+Untuk menampilkan pengguna yang sedang login saya hanya mengganti value dari `name` pada fungsi `show_main` yang ada pada `view.py` menjadi seperti berikut
+
+```python
+def show_main(request):
+    products = Product.objects.filter(user=request.user)
+
+    context = {
+        'name': request.user.username,
+    ...
+    }
+```
+
+Saya menerapkan cookies untuk menambahkan data last login dan menampilkannya ke halaman main.
+
+Pertama-tama saya melakukan impor  `HttpResponseRedirect`, `reverse`, dan `datetime` pada `views.py` yang ada di subdirektori `main`
+
+```python
+import datetime
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+```
+
+Pada fungsi `login_user` saya mengganti kode yang ada pada blok `if user is nor None` untuk menambahkan cookie `last_login` agar dapat melihat kapan terakhir kali pengguna melakukan login
+
+```python
+...
+if user is not None:
+    login(request, user)
+    response = HttpResponseRedirect(reverse("main:show_main")) 
+    response.set_cookie('last_login', str(datetime.datetime.now()))
+    return response
+...
+```
+
+Saya juga mengubah fungsi `show_main` dengan menambahkan key `last_login` seperti berikut
+
+```python
+def show_main(request):
+    products = Product.objects.filter(user=request.user)
+
+    context = {
+        'name': request.user.username,
+        'app': 'Amoron Rental',
+        'kelas' : 'PBP D',
+        'products' : products,
+        'last_login': request.COOKIES['last_login'],
+    }
+
+    return render(request, "main.html", context)
+```
+
+Pada fungsi `logout_user` juga diubah menjadi seperti berikut
+
+```python
+def logout_user(request):
+    logout(request)
+    response = HttpResponseRedirect(reverse('main:login'))
+    response.delete_cookie('last_login')
+    return response
+```
+
+Terakhir, untuk menampilkan data last login pada laman, saya menambahkan kode berikut pada `main.html`
+
+```html
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+```
+
+<h1> BONUS </h1>
+
+Berikut adalah pengimplementasian tombol `Delete`, `Increment Amount`, dan `Decrement Amount` yang fungsional
+
+[![message-Image-1695724041601.jpg](https://i.postimg.cc/rmD4905m/message-Image-1695724041601.jpg)](https://postimg.cc/0MqrkNWR)
 
 </details>
 
