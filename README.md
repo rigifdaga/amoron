@@ -69,6 +69,7 @@ Namun, meskipun cookies secara umum aman, ada beberapa risiko keamanan dan priva
 <h2>Mengimplementasi Fungsi Registrasi, Login, dan Logout</h2>
 
 1. Mengimplementasi Fungsi Registrasi
+
 Pertama-tama saya membuka `views.py` yang ada pada subdirektori `main` dan membuat fungsi dengan nama `register` yang menerima parameter `request`. Saya mengimpor `redirect`, `UserCreationForm`, dan `messages` untuk keperluan fungsi ini. 
 
 ```python
@@ -143,6 +144,7 @@ path('register/', register, name='register'),
 ```
 
 2. Mengimplementasi Fungsi Login
+
 Pada `views.py` saya menambahkan import `authenticate` dan `login`
 
 ```python
@@ -229,6 +231,7 @@ path('login/', login_user, name='login'),
 ```
 
 3. Mengimplementasikan Fungsi Logout
+
 Pada `views.py` saya menambahkan import `logout`
 
 ```python
