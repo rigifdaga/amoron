@@ -1,83 +1,94 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <html>
-    <head>
-        <style>
-            body {
-                background-color: lightyellow;
-                font-family: Arial, sans-serif;
-            }
-            h1 {
-                color: firebrick;
-                text-align: center;
-            }
-            p {
-                color: black;
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>{{ app }}</h1>
-        <p>**NEW!** Amoron Rental is now open for renting electronics. You can choose from a variety of electronics, such as LED Projector, TV, Fridge, and more. Whether you need them for study or entertainment, Amoron Rental has you covered. Try it today!</p>
-        <p>Created by: Rifda Aulia Nurbahri</p>
-        <p>Class: PBP D</p>
-    </body>
-    </html>
+  <div class=>
+  <header class="absolute inset-x-0 top-0 z-50">
+    <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+      <div class="flex lg:flex-1 items-center">
+        <a href="#" class="-m-1 p-1 flex items-center">
+          <span class="sr-only">Your Company</span>
+          <img class="h-8 w-auto" src="https://i.postimg.cc/tTLYQJ53/6543540.png" alt="">
+          {% if user.is_authenticated %}
+            <span class="text-sm font-semibold leading-6 text-gray-900 ml-4">Welcome, {{ user.username }}</span>
+          {% endif %}
+        </a>
+      </div>      
+      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+        <a href="{% url 'main:logout' %}" class="text-sm font-semibold leading-6 text-gray-900">Log Out <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </nav>
+  </header>
 
-<h2>Welcome {{ name }}!</h2>
+  <div class="relative isolate px-6 pt-14 lg:px-8">
+    <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+      <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#B32E22] to-[#FFFBC8] opacity-31 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+    </div>
+    <div class="mx-auto max-w-2xl py-16 sm:py-32">
+      <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+      </div>
+      <div class="text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-red-800 sm:text-6xl">Amoron Rental</h1>
+        <p class="mt-6 text-lg leading-8 text-gray-600">Imagine stepping into a world where our appliances are not just tools but your trusted companions on the rollercoaster of university life</p>             
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {% for product in products %}
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg {% if forloop.counter == products|length %}bg-blue-200{% endif %}">
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold">{{ product.name }}</h3>
+                    <p class="text-gray-600">{{ product.description }}</p>
+                    <p class="text-gray-800 font-semibold mt-2">{{ product.price }}</p>
+        
+                    <!-- Increment and Decrement Buttons -->
+                    <div class="mt-4 flex justify-center">
+                        <div class="flex items-center space-x-2">
+                            <!-- Decrement Button -->
+                            <form method="post" action="{% url 'main:decrement_amount' product.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.pk }}">
+                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2.5 rounded">-</button>
+                            </form>
+        
+                            <!-- Amount Display -->
+                            <span id="amount{{ product.pk }}" class="text-lg font-semibold">{{ product.amount }}</span>
+        
+                            <!-- Increment Button -->
+                            <form method="post" action="{% url 'main:increment_amount' product.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.pk }}">
+                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded">+</button>
+                            </form>
+                        </div>
+                    </div>
+        
+                    <!-- Edit and Delete Buttons -->
+                    <div class="mt-4 flex justify-center">
+                        <div>
+                            <a href="{% url 'main:edit_product' product.pk %}" class="btn btn-primary btn-sm">
+                                Edit
+                            </a>
+                            <a href="{% url 'main:delete_product' product.pk %}" class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          {% endfor %}
+        </div>        
+        <p class="mt-6 text-lg leading-8 text-gray-600">Last login session: {{ last_login }}</p>
+        <div class="mt-6 flex items-center justify-center gap-x-6">
+          <a href="{% url 'main:create_product' %}" class="rounded-md bg-red-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add New Product</a>
+        </div>
+      </div>
+    </div>
+    <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-40rem)]" aria-hidden="true">
+      <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#B32E22] to-[#FFFBC8] opacity-31 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+    </div>
+  </div>
+</div>
 
-<h2>You saved {{ products.count }} item(s) in this app</h2>
-
-<table style="border: 1px solid black; border-collapse: collapse;">
-    <tr>
-        <th style="border: 1px solid black; padding: 10px;">Name</th>
-        <th style="border: 1px solid black; padding: 10px;">Description</th>
-        <th style="border: 1px solid black; padding: 10px;">Status</th>
-        <th style="border: 1px solid black; padding: 10px;">Amount</th>
-        <th style="border: 1px solid black; padding: 10px;">Price</th>
-    </tr>
-
-    {% for product in products %}
-        <tr>
-            <td style="border: 1px solid black; padding: 10px;">{{ product.name }}</td>
-            <td style="border: 1px solid black; padding: 10px;">{{ product.description }}</td>
-            <td style="border: 1px solid black; padding: 10px;">{{ product.status }}</td>
-            <td style="border: 1px solid black; padding: 10px;">
-                {{ product.amount }}
-                <a href="{% url 'main:increment_amount' product.id %}">
-                    <button>+</button>
-                </a>
-                <a href="{% url 'main:decrement_amount' product.id %}">
-                    <button>-</button>
-                </a>
-            </td>
-            <td style="border: 1px solid black; padding: 10px;">{{ product.price }}</td>
-            <td style="border: 1px solid black; padding: 10px;">
-                <a href="{% url 'main:delete_product' product.id %}">
-                    <button>Delete</button>
-                </a>
-            </td>
-        </tr>
-    {% endfor %}
-
-</table>
-
-<br />
-
-<h5>Sesi terakhir login: {{ last_login }}</h5>
-
-<a href="{% url 'main:create_product' %}">
-    <button>
-        Add New Product
-    </button>
-</a>
-
-<a href="{% url 'main:logout' %}">
-    <button>
-        Logout
-    </button>
-</a>
+<footer class="text-center py-4 bg-gray-700 text-white">
+  <p class="text-sm">&copy; {% now "Y" %} Rifda Aulia Nurbahri - 2206081660 - PBP D</p>
+</footer>
 
 {% endblock content %}
+

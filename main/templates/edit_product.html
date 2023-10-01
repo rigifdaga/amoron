@@ -1,9 +1,12 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+
+{% load static %}
 
 {% block content %}
+
 <body class="bg-yellow-50">
     <div class="container my-10 shadow-lg rounded-lg p-8 divide-y bg-gray-100">
-      <h1 class="text-xl font-bold text-center text-red-800 text-firebrick">Add Rentable Appliances</h1>
+      <h1 class="text-xl font-bold text-center text-red-800 text-firebrick">Edit Product</h1>
       <form method="POST" class="mt-4">
         {% csrf_token %}
         <table class="w-full">
@@ -12,7 +15,7 @@
             <td class="py-3"></td>
             <td class="py-3">
               <div class="flex items-center space-x-4">
-                <input type="submit" value="Add Product"
+                <input type="submit" value="Edit Product"
                   class="w-full bg-red-800 text-white font-bold py-2 px-4 rounded hover:bg-red-900 focus:outline-none focus:ring-green-500 px-3 py-2" />
               </div>
             </td>
