@@ -8,6 +8,60 @@ https://amoron.adaptable.app/
 
 <details>
 
+<summary>Tugas 5</summary>
+
+<h1>Manfaat Elemen Selector</h1>
+
+Element selector adalah selector CSS yang memilih elemen HTML berdasarkan nama tag-nya. Misalnya, selector `p` akan memilih semua elemen `<p>` di dokumen. Element selector berguna untuk mengatur gaya umum untuk elemen tertentu, seperti warna font, ukuran font, margin, padding, dll. Element selector sebaiknya digunakan ketika kita ingin menerapkan gaya yang konsisten dan seragam untuk elemen yang sama di seluruh halaman web.
+    
+<h1>HTML5 Tag</h1>
+
+HTML5 Tag adalah tag HTML yang diperkenalkan atau diperbarui dalam versi HTML5. Beberapa contoh HTML5 Tag adalah:
+1. `<article>`: Menentukan konten mandiri yang dapat berdiri sendiri atau didistribusikan secara terpisah, seperti artikel blog, berita, komentar, dll.
+2. `<aside>`: Menentukan konten yang terkait secara tidak langsung dengan konten utama halaman, seperti sidebar, kotak iklan, dll.
+3. `<audio>`: Menentukan suara atau musik yang tertanam dalam halaman, dan menyediakan kontrol pemutar untuk pengguna.
+4. `<canvas>`: Menentukan area grafis yang dapat digambar dengan menggunakan skrip (biasanya JavaScript), seperti membuat grafik, animasi, game, dll.
+5. `<datalist>`: Menentukan daftar opsi yang telah ditentukan sebelumnya untuk kontrol input, seperti kotak teks dengan fitur autocompletion.
+6. `<details>`: Menentukan detail tambahan yang dapat dilihat atau disembunyikan oleh pengguna, seperti FAQ, petunjuk, dll.
+7. `<figure>`: Menentukan konten mandiri yang biasanya memiliki keterangan, seperti gambar, diagram, kutipan, dll.
+8. `<footer>`: Menentukan footer untuk dokumen atau bagian, seperti informasi hak cipta, tautan navigasi, dll.
+9. `<header>`: Menentukan header untuk dokumen atau bagian, seperti judul, logo, menu, dll.
+10. `<nav>`: Menentukan bagian navigasi dalam halaman, seperti menu utama, breadcrumb, dll.
+11. `<section>`: Menentukan bagian dalam dokumen yang memiliki topik terkait, seperti bab buku, subjudul artikel, dll.
+12. `<video>`: Menentukan video yang tertanam dalam halaman, dan menyediakan kontrol pemutar untuk pengguna.
+
+<h1>Perbedaan antara Margin dan Padding</h1>
+
+Margin dan padding adalah properti CSS yang berhubungan dengan ruang di sekitar dan di dalam elemen. Perbedaan utamanya adalah:
+- Margin adalah ruang di luar elemen. Margin digunakan untuk membuat jarak antara elemen dengan elemen lain di sekitarnya. Margin tidak termasuk dalam ukuran elemen dan tidak mempengaruhi warna latar belakang atau gambar elemen. Margin juga dapat menyebabkan fenomena collapsing margin, yaitu ketika margin vertikal dari dua elemen bersebelahan saling tumpang tindih dan menghasilkan margin gabungan yang lebih kecil dari jumlah margin aslinya.
+- Padding adalah ruang di dalam elemen. Padding digunakan untuk membuat jarak antara konten dengan batas elemen. Padding termasuk dalam ukuran elemen dan mempengaruhi warna latar belakang atau gambar elemen. Padding tidak menyebabkan collapsing margin.
+    
+<h1>Perbedaan antara framework CSS Tailwind dan Bootstrap</h1>
+
+Framework CSS Tailwind dan Bootstrap adalah framework CSS yang populer dan banyak digunakan oleh para pengembang web. Perbedaan utamanya adalah:
+- Tailwind adalah framework CSS utility-first yang memberikan kelas utilitas untuk membangun desain kustom. Tailwind tidak menawarkan komponen siap pakai yang dapat digunakan langsung, melainkan memberikan alat untuk membuatnya dengan cepat dan mudah. Tailwind lebih fleksibel dan dapat disesuaikan sesuai kebutuhan dan preferensi pengembang. Tailwind juga menghasilkan kode CSS yang lebih ringkas dan efisien dengan menggunakan fitur PurgeCSS yang menghapus kelas utilitas yang tidak digunakan dari file CSS akhir.
+- Bootstrap adalah framework CSS komponen-based yang memberikan komponen siap pakai yang dirancang untuk bekerja dengan baik bersama-sama. Bootstrap memudahkan pengembang untuk membuat website dengan cepat dengan gaya yang konsisten. Bootstrap juga menyediakan sistem grid responsif yang memudahkan pengembang untuk mengatur layout website. Bootstrap kurang fleksibel dan dapat disesuaikan dibandingkan dengan Tailwind, karena pengembang harus mengikuti aturan dan konvensi yang ditetapkan oleh Bootstrap. Bootstrap juga cenderung menghasilkan kode CSS yang lebih besar dan berlebihan karena mengandung banyak komponen dan kelas yang mungkin tidak dibutuhkan oleh pengembang.
+
+Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya? Jawabannya tergantung pada kebutuhan dan tujuan proyek web yang sedang dikerjakan. Secara umum, kita sebaiknya menggunakan Bootstrap jika:
+- Kita ingin membuat website dengan cepat tanpa harus memikirkan desain kustom.
+- Kita ingin menggunakan komponen siap pakai yang sudah teruji dan terintegrasi dengan baik.
+- Kita tidak terlalu peduli dengan ukuran file CSS atau kinerja website.
+- Kita tidak ingin belajar banyak kelas utilitas baru atau menulis CSS sendiri.
+- Kita tidak keberatan dengan gaya default Bootstrap yang mungkin sudah terlalu umum atau membosankan.
+
+Sebaliknya, kita sebaiknya menggunakan Tailwind jika:
+- Kita ingin membuat website dengan desain kustom yang unik dan sesuai dengan visi kita.
+- Kita ingin memiliki kontrol penuh atas gaya dan layout website.
+- Kita peduli dengan ukuran file CSS atau kinerja website.
+- Kita ingin belajar banyak kelas utilitas baru atau menulis CSS sendiri.
+- Kita ingin menghindari gaya default Bootstrap yang mungkin sudah terlalu umum atau membosankan.
+
+<h1>Implementasi Checklist</h1>
+
+</details>
+
+<details>
+
 <summary> Tugas 4 </summary>
 
 <h1> Django UserCreationForm </h1>
