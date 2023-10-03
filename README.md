@@ -58,6 +58,320 @@ Sebaliknya, kita sebaiknya menggunakan Tailwind jika:
 
 <h1>Implementasi Checklist</h1>
 
+Saya melakukan kustomisasi desain dengan menggunakan CSS framework yaitu Tailwind. Pertama-tama saya melakukan instalasi Tailwind dengan menambahkan script Play CDN ke base.html saya.
+```html
+<script src="https://cdn.tailwindcss.com"></script>
+```
+
+<h2>Kustomisasi Login Page</h2>
+
+[![JdblShx.md.png](https://iili.io/JdblShx.md.png)](https://freeimage.host/i/JdblShx)
+
+Pada laman login saya membuat backgroundnya menjadi kuning muda dan saya membuat container kanan dan kiri, container kiri berisi form untuk melakukan login dan container kanan adalah gambar untuk memperbagus tampilan. 
+
+```html
+<body class="gradient-form h-full bg-yellow-50 dark:bg-neutral-700">
+  <div class="container mx-auto h-screen p-20 xl:w-3/4">
+    <div
+      class="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
+      <div class="w-full">
+        <div
+          class="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
+          <div class="g-0 lg:flex lg:flex-wrap">
+            <!-- Left column container-->
+            <div class="px-8 md:px-0 lg:w-6/12">
+              <div class="md:mx-6 md:p-12">
+                <!--Logo-->
+                <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+                    <img class="mx-auto h-10 w-auto" src="https://i.postimg.cc/tTLYQJ53/6543540.png">
+                    <h2 class="mt-2 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
+                </div>
+
+                <form class="space-y-6" action="" method="POST">
+                    {% csrf_token %}
+                    <div>
+                    <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+                    <div class="mt-2">
+                        <input type="text" id="username" name="username" placeholder="Username" required class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    </div>
+            
+                    <div>
+                    <div class="flex items-center justify-between">
+                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                    </div>
+                    <div class="mt-2">
+                        <input id="password" name="password" type="password" placeholder="Password" required class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-5 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    </div>
+            
+                    <div>
+                    <button type="submit" class="flex w-full justify-center rounded-md bg-red-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+                    </div>
+                </form>
+                {% if messages %}
+                    <ul class="mt-3">
+                        {% for message in messages %}
+                            <li class="alert alert-danger">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            
+                <p class="mt-10 text-center text-sm text-gray-500">
+                    Don't have an account yet?
+                    <a href="{% url 'main:register' %}" class="font-semibold leading-6 text-yellow-600 hover:text-yellow-600">Register Now</a>
+                </p>
+              </div>
+            </div>
+
+            <!-- Right column container with background and description-->
+            <div
+              class="flex items-center rounded-b-lg lg:w-6/12 lg:rounded-r-lg lg:rounded-bl-none"
+              style="background: url(https://i.postimg.cc/66dJwT6M/3833025.jpg) no-repeat center center; background-size: cover;">
+              <div class="px-4 py-6 text-white md:mx-6 md:p-12">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+```
+
+<h2>Kustomisasi Register Page</h2>
+
+[![JdbEtTu.md.png](https://iili.io/JdbEtTu.md.png)](https://freeimage.host/i/JdbEtTu)
+
+Pada laman register yang tadinya function registernya menggunakan forms yang sudah ada di forms.py disini saya mengubahnya dengan membuat baru function register yang ada di `views.py`
+
+```python
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            if User.objects.filter(username=username).exists():
+                messages.info(request, 'Username taken')
+                return redirect('main:register')
+            else:
+                user = User.objects.create_user(username=username, password=password)
+                user.save()
+                messages.success(request, 'Your account has been successfully created!')
+                return redirect('main:login')
+
+        else:
+            messages.info(request, 'Password not matching..')
+            return redirect('main:register')
+    else:
+        return render(request, 'register.html')
+```
+
+Untuk tampilannya kurang lebih mirip dengan login page tapi hanya ada satu container, saya melakukan kustomisasinya seperti berikut
+
+```html
+<body class="bg-yellow-50" >
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <a href="#" class="flex items-center mb-6 text-2xl font-bold text-red-700 dark:text-white">
+            <img class="w-8 h-8 mr-2" src="https://i.postimg.cc/tTLYQJ53/6543540.png" alt="logo">
+            Amoron
+        </a>
+        <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                    Create an account
+                </h1>
+                <form class="space-y-4 md:space-y-6" method="POST" action="{% url 'main:register' %}">
+                    {% csrf_token %} 
+                    <div>
+                        <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                        <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" required="">
+                    </div>
+                    <div>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                        <input type="password" name="password" id="password" placeholder="Password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                    </div>
+                    <div>
+                        <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
+                        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                    </div>
+                    <button type="submit" value="Daftar" class="w-full text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
+                </form>
+
+                {% if messages %}  
+                    <ul>   
+                        {% for message in messages %}  
+                            <li>{{ message }}</li>  
+                        {% endfor %}  
+                    </ul>   
+                {% endif %}
+
+                <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                    Already have an account? <a href="{% url 'main:login' %}" class="font-medium text-yellow-600 hover:underline dark:text-primary-500">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+<footer class="text-center py-4 bg-gray-700 text-white">
+    <p class="text-sm">&copy; {% now "Y" %} Rifda Aulia Nurbahri - 2206081660 - PBP D</p>
+</footer>
+```
+
+<h2>Kustomisasi Add New Product dan Edit Product Page</h2>
+
+[![JdbGQFp.md.png](https://iili.io/JdbGQFp.md.png)](https://freeimage.host/i/JdbGQFp)
+
+[![JdbMdP4.md.png](https://iili.io/JdbMdP4.md.png)](https://freeimage.host/i/JdbMdP4)
+
+Sebetulnya untuk laman ini masih sama seperti sebelumnya yaitu menggunakan form, namun hanya saya perbagus tampilannya menggunakan Tailwind seperti sebagai berikut:
+
+```html
+<body class="bg-yellow-50">
+    <div class="container my-10 shadow-lg rounded-lg p-8 divide-y bg-gray-100">
+      <h1 class="text-xl font-bold text-center text-red-800 text-firebrick">Add Rentable Appliances</h1>
+      <form method="POST" class="mt-4">
+        {% csrf_token %}
+        <table class="w-full">
+          {{ form.as_table }}
+          <tr>
+            <td class="py-3"></td>
+            <td class="py-3">
+              <div class="flex items-center space-x-4">
+                <input type="submit" value="Add Product"
+                  class="w-full bg-red-800 text-white font-bold py-2 px-4 rounded hover:bg-red-900 focus:outline-none focus:ring-green-500 px-3 py-2" />
+              </div>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+</body>
+```
+
+```html
+<body class="bg-yellow-50">
+    <div class="container my-10 shadow-lg rounded-lg p-8 divide-y bg-gray-100">
+      <h1 class="text-xl font-bold text-center text-red-800 text-firebrick">Edit Product</h1>
+      <form method="POST" class="mt-4">
+        {% csrf_token %}
+        <table class="w-full">
+          {{ form.as_table }}
+          <tr>
+            <td class="py-3"></td>
+            <td class="py-3">
+              <div class="flex items-center space-x-4">
+                <input type="submit" value="Edit Product"
+                  class="w-full bg-red-800 text-white font-bold py-2 px-4 rounded hover:bg-red-900 focus:outline-none focus:ring-green-500 px-3 py-2" />
+              </div>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+</body>
+```
+
+<h2>Kustomisasi Main Page</h2>
+
+[![JdbNhEg.md.png](https://iili.io/JdbNhEg.md.png)](https://freeimage.host/i/JdbNhEg)
+
+Pada halaman daftar inventori ini backgroundnya berbeda dari laman yang lain, saya menggunakan warna putih sebagai background dan ditambah dengan elemen-elemen blob gradient di layer atas background. Pada laman ini juga ada navigation bar di atas yang menampilkan welcome message dan tombol logout. Saya juga tidak lagi menggunakan tabel untuk menampilkan daftar product, di sini saya menggunakan card. Berikut adalah codenya:
+
+```html
+<div class=>
+  <header class="absolute inset-x-0 top-0 z-50">
+    <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+      <div class="flex lg:flex-1 items-center">
+        <a href="#" class="-m-1 p-1 flex items-center">
+          <span class="sr-only">Your Company</span>
+          <img class="h-8 w-auto" src="https://i.postimg.cc/tTLYQJ53/6543540.png" alt="">
+          {% if user.is_authenticated %}
+            <span class="text-sm font-semibold leading-6 text-gray-900 ml-4">Welcome, {{ user.username }}</span>
+          {% endif %}
+        </a>
+      </div>      
+      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+        <a href="{% url 'main:logout' %}" class="text-sm font-semibold leading-6 text-gray-900">Log Out <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="relative isolate px-6 pt-14 lg:px-8">
+    <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+      <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#B32E22] to-[#FFFBC8] opacity-31 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+    </div>
+    <div class="mx-auto max-w-2xl py-16 sm:py-32">
+      <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+      </div>
+      <div class="text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-red-800 sm:text-6xl">Amoron Rental</h1>
+        <p class="mt-6 text-lg leading-8 text-gray-600">Imagine stepping into a world where our appliances are not just tools but your trusted companions on the rollercoaster of university life</p>             
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {% for product in products %}
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg {% if forloop.counter == products|length %}bg-blue-200{% endif %}">
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold">{{ product.name }}</h3>
+                    <p class="text-gray-600">{{ product.description }}</p>
+                    <p class="text-gray-800 font-semibold mt-2">{{ product.price }}</p>
+        
+                    <!-- Increment and Decrement Buttons -->
+                    <div class="mt-4 flex justify-center">
+                        <div class="flex items-center space-x-2">
+                            <!-- Decrement Button -->
+                            <form method="post" action="{% url 'main:decrement_amount' product.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.pk }}">
+                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2.5 rounded">-</button>
+                            </form>
+        
+                            <!-- Amount Display -->
+                            <span id="amount{{ product.pk }}" class="text-lg font-semibold">{{ product.amount }}</span>
+        
+                            <!-- Increment Button -->
+                            <form method="post" action="{% url 'main:increment_amount' product.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.pk }}">
+                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded">+</button>
+                            </form>
+                        </div>
+                    </div>
+        
+                    <!-- Edit and Delete Buttons -->
+                    <div class="mt-4 flex justify-center">
+                        <div>
+                            <a href="{% url 'main:edit_product' product.pk %}" class="btn btn-primary btn-sm">
+                                Edit
+                            </a>
+                            <a href="{% url 'main:delete_product' product.pk %}" class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          {% endfor %}
+        </div>        
+        <p class="mt-6 text-lg leading-8 text-gray-600">Last login session: {{ last_login }}</p>
+        <div class="mt-6 flex items-center justify-center gap-x-6">
+          <a href="{% url 'main:create_product' %}" class="rounded-md bg-red-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add New Product</a>
+        </div>
+      </div>
+    </div>
+    <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-40rem)]" aria-hidden="true">
+      <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#B32E22] to-[#FFFBC8] opacity-31 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="text-center py-4 bg-gray-700 text-white">
+  <p class="text-sm">&copy; {% now "Y" %} Rifda Aulia Nurbahri - 2206081660 - PBP D</p>
+</footer>
+```
+
 </details>
 
 <details>
