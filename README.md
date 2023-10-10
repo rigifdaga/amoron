@@ -8,6 +8,36 @@ https://amoron.adaptable.app/
 
 <details>
 
+<summary>Tugas 6</summary>
+
+<h1>Perbedaan antara Asynchronous Programming dengan Synchronous Programming</h1>
+
+Asynchronous dan Synchronous adalah dua teknik atau gaya pemrograman yang masing-masing memiliki keunggulan dan kekurangannya.
+
+Asynchronous programming adalah pendekatan pemrograman yang tidak terikat pada input output (I/O) protocol. Pemrograman asynchronous tidak melakukan pekerjaannya secara old style / cara lama yaitu dengan eksekusi baris program satu persatu secara hirarki. Asynchronous programming melakukan pekerjaannya tanpa harus terikat dengan proses lain atau dapat kita sebut secara Independent. Dengan pendekatan ini, waktu eksekusi juga dapat menjadi lebih singkat dan cepat.
+
+Sebaliknya, Synchronous programming memiliki pendekatan yang lebih old style. Task akan dieksekusi satu persatu sesuai dengan urutan dan prioritas task. Hal ini memiliki kekurangan pada lama waktu eksekusi karena masing-masing task harus menunggu task lain selesai untuk diproses terlebih dahulu. Namun, bukan berarti Synchronous programming jauh lebih jelek dibandingkan dengan asynchronous programming. Terdapat beberapa hal yang menjadi synchronous programming memiliki keunggulan dibandingkan dengan asynchronous programming. Beberapa diantaranya adalah kemudahan yang ditawarkan oleh synchronous programming dibandingkan dengan asynchronous programming.
+
+<h1>Event Driven Programming</h1>
+
+Paradigma event-driven programming adalah paradigma pemrograman yang berfokus pada penanganan event atau kejadian yang terjadi dalam program, seperti input dari pengguna, klik mouse, tekan keyboard, respons dari server, dll. Paradigma ini memungkinkan program untuk berinteraksi dengan pengguna dan lingkungan secara dinamis dan responsif.
+
+Salah satu contoh penerapan paradigma event-driven programming pada tugas ini adalah ketika user mengklik tombol "Search" pada halaman web. Event ini akan memicu fungsi JavaScript yang mengirimkan permintaan ke server menggunakan Fetch API. Server kemudian akan mengirimkan respons berupa data JSON yang berisi informasi tentang pencarian user. Fungsi JavaScript akan menerima respons ini dan memprosesnya untuk menampilkan hasil pencarian pada halaman web.
+
+<h1>Penerapan Asynchronous Programming pada AJAX</h1>
+
+AJAX adalah singkatan dari Asynchronous Javascript and XML dan mengacu pada sekumpulan teknis pengembangan web (web development) yang memungkinkan aplikasi web untuk bekerja secara asynchronous (tidak langsung) – memproses setiap request (permintaan) yang datang ke server di sisi background. Aplikasi web yang menggunakan AJAX dapat mengirimkan dan menerima data dari server tanpa harus mereload keseluruhan halaman.
+
+Penerapan asynchronous programming pada AJAX memungkinkan aplikasi web untuk melakukan permintaan ke server dan menerima respons tanpa mengganggu pengalaman pengguna. Misalnya, ketika pengguna mengisi formulir di halaman web, AJAX dapat digunakan untuk mengirimkan data formulir ke server. Selama proses ini, pengguna dapat terus berinteraksi dengan halaman web tanpa perlu menunggu respons dari server. Ini membuat aplikasi web menjadi lebih responsif dan user-friendly.
+
+<h1>Perbandingan Penerapan AJAX dengan Menggunakan Fetch API dan jQuery</h1>
+
+Fetch API dan jQuery adalah dua teknologi yang sering digunakan dalam AJAX. Fetch API merupakan fungsi native yang tersedia pada Javascript dan tidak kalah praktis seperti JQuery saat menggunakannya. Fetch merupakan cara baru dalam melakukan network request. Fetch akan mengembalikan sebuah promise; Secara bawaan (default), fetch tidak akan mengirim atau menerima cookie dari server. Sebaliknya, jQuery adalah library yang menyediakan fungsi AJAX yang disederhanakan dari fungsi bawaan AJAX yang sudah tertanam pada browser. Tidak ada kelebihan yang ditawarkan JQuery selain penyederhanaan pada fungsi, apalagi ada fungsi shorthand dari .ajaxyaitu.get dan $.post.
+
+</details>
+
+<details>
+
 <summary>Tugas 5</summary>
 
 <h1>Manfaat Elemen Selector</h1>
