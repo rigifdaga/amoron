@@ -4,7 +4,7 @@ NPM     : 2206081660
 
 Kelas   : PBP D
 
-https://amoron.adaptable.app/
+https://rifda-aulia-tugas.pbp.cs.ui.ac.id
 
 <details>
 
