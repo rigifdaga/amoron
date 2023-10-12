@@ -1,5 +1,6 @@
+from django.forms import model_to_dict
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from main.forms import ProductForm
 from django.urls import reverse
 from main.models import Product
@@ -17,6 +18,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required(login_url='/login')
 
@@ -119,9 +121,11 @@ def decrement_amount(request, id):
     return HttpResponseRedirect(reverse('main:show_main'))
 
 def delete_product(request, id):
-    product = get_object_or_404(Product, pk=id)
-    if product.user == request.user:
-        product.delete()
+    # Get data berdasarkan ID
+    product = Product.objects.get(pk = id)
+    # Hapus data
+    product.delete()
+    # Kembali ke halaman awal
     return HttpResponseRedirect(reverse('main:show_main'))
 
 def edit_product(request, id):
@@ -138,3 +142,39 @@ def edit_product(request, id):
 
     context = {'form': form}
     return render(request, "edit_product.html", context)
+
+def get_product_json(request):
+    products = Product.objects.filter(user=request.user)
+    product_list = []
+    for product in products:
+        product_dict = {
+            'pk': product.pk,
+            'name': product.name,
+            'description': product.description,
+            'price': product.price,
+            'amount': product.amount,
+            'edit_url': reverse('main:edit_product', args=[product.pk]),
+            'delete_url': reverse('main:delete_product', args=[product.pk]),
+        }
+        product_list.append(product_dict)
+    return JsonResponse(product_list, safe=False)
+
+
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        amount = request.POST.get("amount")
+        status = request.POST.get("status")
+        user = request.user
+
+        new_product = Product(name=name, price=price, description=description, amount=amount, status=status, user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+
+    

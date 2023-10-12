@@ -34,6 +34,269 @@ Penerapan asynchronous programming pada AJAX memungkinkan aplikasi web untuk mel
 
 Fetch API dan jQuery adalah dua teknologi yang sering digunakan dalam AJAX. Fetch API merupakan fungsi native yang tersedia pada Javascript dan tidak kalah praktis seperti JQuery saat menggunakannya. Fetch merupakan cara baru dalam melakukan network request. Fetch akan mengembalikan sebuah promise; Secara bawaan (default), fetch tidak akan mengirim atau menerima cookie dari server. Sebaliknya, jQuery adalah library yang menyediakan fungsi AJAX yang disederhanakan dari fungsi bawaan AJAX yang sudah tertanam pada browser. Tidak ada kelebihan yang ditawarkan JQuery selain penyederhanaan pada fungsi, apalagi ada fungsi shorthand dari .ajaxyaitu.get dan $.post.
 
+<h1>Implementasi Langkah</h1>
+
+<h2>Mengubah Kode Cards Data Item agar Mendukung AJAX GET dan Melakukan Pengambilan Task Menggunakan AJAX GET</h2>
+
+Pertama-tama saya menghapus kode pada `main.html` untuk menampilkan cards dan mengubahnya dengan mengimplementasikan ajax get pada `<scripts>`
+
+```html
+<div id ="product_grid" class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+```
+
+```html
+<script>
+  async function getProducts() {
+    return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+  }
+
+  async function refreshProducts() {
+    const products = await getProducts()
+
+    let htmlString = "";
+    products.forEach((item, index) => {
+        htmlString += `
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg ${index === products.length - 1 ? 'bg-blue-200' : ''}">
+            <div class="p-4">
+                <h3 class="text-xl font-semibold">${item.name}</h3>
+                <p class="text-gray-600">${item.description}</p>
+                <p class="text-gray-800 font-semibold mt-2">${item.price}</p>
+
+                <!-- Increment and Decrement Buttons -->
+                <div class="mt-4 flex justify-center">
+                    <div class="flex items-center space-x-2">
+                        <!-- Decrement Button -->
+                        <button onclick="decrementAmount(${item.pk})" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2.5 rounded">-</button>
+
+                        <!-- Amount Display -->
+                        <span id="amount${item.pk}" class="text-lg font-semibold">${item.amount}</span>
+
+                        <!-- Increment Button -->
+                        <button onclick="incrementAmount(${item.pk})" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded">+</button>
+                    </div>
+                </div>
+
+                <!-- Edit and Delete Buttons -->
+                <div class="mt-4 flex justify-center">
+                    <div>
+                        <a href="${item.edit_url}" class="btn btn-primary btn-sm">
+                            Edit
+                        </a>
+                        <a href="${item.delete_url}" class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>` 
+    });
+
+    document.getElementById("product_grid").innerHTML = htmlString;
+}
+
+  async function incrementAmount(id) {
+      const response = await fetch(`/increment-amount/${id}`);
+      refreshProducts();
+  }
+
+  async function decrementAmount(id) {
+      const response = await fetch(`/decrement-amount/${id}`);
+      refreshProducts();
+  }
+
+  async function deleteProduct(id) {
+    const response = await fetch(`/delete-amount/${id}`);
+      refreshProducts();
+  }
+
+  refreshProducts();
+
+  function addProduct() {
+      fetch("{% url 'main:add_product_ajax' %}", {
+          method: "POST",
+          body: new FormData(document.querySelector('#form'))
+      }).then(refreshProducts)
+
+      document.getElementById("form").reset()
+      return false
+    }
+
+    document.getElementById("button_add").onclick = addProduct
+
+</script>
+```
+
+<h2>Membuat Tombol yang Membuka Modal Form dan Membuat Modal Form</h2>
+
+Pada `main.html` saya menghapus tombol `Add New Product` yang lama dan menggantinya dengan tombol `Add New Product by AJAX` 
+
+```html
+<div class="mt-6 flex items-center justify-center gap-x-6">
+    <button type="button" class="rounded-md bg-red-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
+</div>
+```
+
+Tombol tersebut memiliki value `data-bs-toggle`yaitu `modal` dan `data-bs-target` yaitu `#exampleModal` yang mana nantinya akan membuka modal form yang memiliki id `#exampleModal`
+
+Di atas tombol tersebut saya membuat modal dengan form untuk menambahkan item seperti berikut
+
+```html
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="col-form-label">Price:</label>
+                        <input type="number" class="form-control" id="price" name="price"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+Pada script juga saya menambahkan function `addProduct()` agar jika tombol diklik, produk baru muncul
+
+```html
+<script>
+    ...
+    function addProduct() {
+        fetch("{% url 'main:add_product_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+    }
+    
+    document.getElementById("button_add").onclick = addProduct
+
+</script>
+```
+
+<h2>Fungsi Views untuk Menambahkan Item Baru</h2>
+
+Berikut adalah fungsi yang saya buat untuk membuat object product baru dengan parameter sesuai values dari request
+
+```python
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        amount = request.POST.get("amount")
+        status = request.POST.get("status")
+        user = request.user
+
+        new_product = Product(name=name, price=price, description=description, amount=amount, status=status, user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+```
+
+<h2>Menghubungkan Form ke Path</h2>
+
+Pada `urls.py` saya menambahkan ini ke `urlpatterns`
+
+```python
+path('create-product-ajax/', add_product_ajax, name='add_product_ajax'),
+```
+
+<h2>Melakukan Refresh Tanpa Reload</h2>
+
+Saya membuat fungsi berikut agar halaman direfresh secara asinkronus tanpa reload
+
+```javascript
+async function refreshProducts() {
+    const products = await getProducts()
+
+    let htmlString = "";
+    products.forEach((item, index) => {
+        htmlString += `
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg ${index === products.length - 1 ? 'bg-blue-200' : ''}">
+            <div class="p-4">
+                <h3 class="text-xl font-semibold">${item.name}</h3>
+                <p class="text-gray-600">${item.description}</p>
+                <p class="text-gray-800 font-semibold mt-2">${item.price}</p>
+
+                <!-- Increment and Decrement Buttons -->
+                <div class="mt-4 flex justify-center">
+                    <div class="flex items-center space-x-2">
+                        <!-- Decrement Button -->
+                        <button onclick="decrementAmount(${item.pk})" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2.5 rounded">-</button>
+
+                        <!-- Amount Display -->
+                        <span id="amount${item.pk}" class="text-lg font-semibold">${item.amount}</span>
+
+                        <!-- Increment Button -->
+                        <button onclick="incrementAmount(${item.pk})" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded">+</button>
+                    </div>
+                </div>
+
+                <!-- Edit and Delete Buttons -->
+                <div class="mt-4 flex justify-center">
+                    <div>
+                        <a href="${item.edit_url}" class="btn btn-primary btn-sm">
+                            Edit
+                        </a>
+                        <a href="${item.delete_url}" class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>` 
+    });
+
+    document.getElementById("product_grid").innerHTML = htmlString;
+}
+```
+
+<h2>Melakukan Perintah collectstatic</h2>
+
+Untuk menjalankan perintah collectstatic dalam Django, kita  dapat mengikuti langkah-langkah berikut:
+
+1. Dorong kode Anda ke server penyebaran.
+
+2. Di server, jalankan perintah collectstatic untuk menyalin semua berkas statis ke dalam STATIC_ROOT. Anda bisa menjalankan perintah ini di terminal:
+
+`./manage.py collectstatic -v0 --noinput
+`
+
+<h1>BONUS</h1>
+
+Berikut adalah penambahan fungsionalitas hapus dengan menggunakan AJAX DELETE
+
+```javascript
+async function deleteProduct(id) {
+    const response = await fetch(`/delete-amount/${id}`);
+        refreshProducts();
+}
+```
+
 </details>
 
 <details>

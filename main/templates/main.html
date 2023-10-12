@@ -29,54 +29,10 @@
       <div class="text-center">
         <h1 class="text-4xl font-bold tracking-tight text-red-800 sm:text-6xl">Amoron Rental</h1>
         <p class="mt-6 text-lg leading-8 text-gray-600">Imagine stepping into a world where our appliances are not just tools but your trusted companions on the rollercoaster of university life</p>             
-        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {% for product in products %}
-            <div class="bg-white rounded-lg overflow-hidden shadow-lg {% if forloop.counter == products|length %}bg-blue-200{% endif %}">
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold">{{ product.name }}</h3>
-                    <p class="text-gray-600">{{ product.description }}</p>
-                    <p class="text-gray-800 font-semibold mt-2">{{ product.price }}</p>
-        
-                    <!-- Increment and Decrement Buttons -->
-                    <div class="mt-4 flex justify-center">
-                        <div class="flex items-center space-x-2">
-                            <!-- Decrement Button -->
-                            <form method="post" action="{% url 'main:decrement_amount' product.pk %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_id" value="{{ product.pk }}">
-                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2.5 rounded">-</button>
-                            </form>
-        
-                            <!-- Amount Display -->
-                            <span id="amount{{ product.pk }}" class="text-lg font-semibold">{{ product.amount }}</span>
-        
-                            <!-- Increment Button -->
-                            <form method="post" action="{% url 'main:increment_amount' product.pk %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_id" value="{{ product.pk }}">
-                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded">+</button>
-                            </form>
-                        </div>
-                    </div>
-        
-                    <!-- Edit and Delete Buttons -->
-                    <div class="mt-4 flex justify-center">
-                        <div>
-                            <a href="{% url 'main:edit_product' product.pk %}" class="btn btn-primary btn-sm">
-                                Edit
-                            </a>
-                            <a href="{% url 'main:delete_product' product.pk %}" class="btn btn-danger btn-sm">
-                                Delete
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          {% endfor %}
-        </div>        
+        <div id ="product_grid" class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>        
         <p class="mt-6 text-lg leading-8 text-gray-600">Last login session: {{ last_login }}</p>
         <div class="mt-6 flex items-center justify-center gap-x-6">
-          <a href="{% url 'main:create_product' %}" class="rounded-md bg-red-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add New Product</a>
+          <button type="button" class="rounded-md bg-red-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
         </div>
       </div>
     </div>
@@ -84,11 +40,133 @@
       <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#B32E22] to-[#FFFBC8] opacity-31 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
     </div>
   </div>
-</div>
+  
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="col-form-label">Price:</label>
+                        <input type="number" class="form-control" id="price" name="price"></input>
+                    </div>
+                    <div class="mb-3">
+                      <label for="amount" class="col-form-label">Amount:</label>
+                      <input type="number" class="form-control" id="amount" name="amount"></input>
+                    </div>
+                    <div class="mb-3">
+                      <label for="status" class="col-form-label">Status:</label>
+                      <input type="text" class="form-control" id="status" name="status"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+            </div>
+        </div>
+    </div>
+  </div>
 
-<footer class="text-center py-4 bg-gray-700 text-white">
-  <p class="text-sm">&copy; {% now "Y" %} Rifda Aulia Nurbahri - 2206081660 - PBP D</p>
-</footer>
+
+  <footer class="text-center py-4 bg-gray-700 text-white">
+    <p class="text-sm">&copy; {% now "Y" %} Rifda Aulia Nurbahri - 2206081660 - PBP D</p>
+  </footer>
+
+  </div>
+
+<script>
+  async function getProducts() {
+    return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+  }
+
+  async function refreshProducts() {
+    const products = await getProducts()
+
+    let htmlString = "";
+    products.forEach((item, index) => {
+        htmlString += `
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg ${index === products.length - 1 ? 'bg-blue-200' : ''}">
+            <div class="p-4">
+                <h3 class="text-xl font-semibold">${item.name}</h3>
+                <p class="text-gray-600">${item.description}</p>
+                <p class="text-gray-800 font-semibold mt-2">${item.price}</p>
+
+                <!-- Increment and Decrement Buttons -->
+                <div class="mt-4 flex justify-center">
+                    <div class="flex items-center space-x-2">
+                        <!-- Decrement Button -->
+                        <button onclick="decrementAmount(${item.pk})" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2.5 rounded">-</button>
+
+                        <!-- Amount Display -->
+                        <span id="amount${item.pk}" class="text-lg font-semibold">${item.amount}</span>
+
+                        <!-- Increment Button -->
+                        <button onclick="incrementAmount(${item.pk})" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded">+</button>
+                    </div>
+                </div>
+
+                <!-- Edit and Delete Buttons -->
+                <div class="mt-4 flex justify-center">
+                    <div>
+                        <a href="${item.edit_url}" class="btn btn-primary btn-sm">
+                            Edit
+                        </a>
+                        <a href="${item.delete_url}" class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>` 
+    });
+
+    document.getElementById("product_grid").innerHTML = htmlString;
+}
+
+  async function incrementAmount(id) {
+      const response = await fetch(`/increment-amount/${id}`);
+      refreshProducts();
+  }
+
+  async function decrementAmount(id) {
+      const response = await fetch(`/decrement-amount/${id}`);
+      refreshProducts();
+  }
+
+  async function deleteProduct(id) {
+    const response = await fetch(`/delete-amount/${id}`);
+      refreshProducts();
+  }
+
+  refreshProducts();
+
+  function addProduct() {
+      fetch("{% url 'main:add_product_ajax' %}", {
+          method: "POST",
+          body: new FormData(document.querySelector('#form'))
+      }).then(refreshProducts)
+
+      document.getElementById("form").reset()
+      return false
+    }
+
+    document.getElementById("button_add").onclick = addProduct
+
+</script>
 
 {% endblock content %}
 
