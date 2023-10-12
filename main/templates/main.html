@@ -125,9 +125,7 @@
                         <a href="${item.edit_url}" class="btn btn-primary btn-sm">
                             Edit
                         </a>
-                        <a href="${item.delete_url}" class="btn btn-danger btn-sm">
-                            Delete
-                        </a>
+                        <button onclick="deleteProduct(${item.pk})" class="btn btn-danger btn-sm">Delete</button>
                     </div>
                 </div>
             </div>
@@ -148,7 +146,7 @@
   }
 
   async function deleteProduct(id) {
-    const response = await fetch(`/delete-amount/${id}`);
+    const response = await fetch(`/delete-product/${id}`);
       refreshProducts();
   }
 
