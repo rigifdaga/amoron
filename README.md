@@ -4,7 +4,7 @@ NPM     : 2206081660
 
 Kelas   : PBP D
 
-https://rifda-aulia-tugas.pbp.cs.ui.ac.id
+http://rifda-aulia-tugas.pbp.cs.ui.ac.id
 
 <details>
 
